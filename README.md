@@ -147,4 +147,3 @@ All routes except register and login require a signed-in session.
 
 ## License
 
-[Add a license, for example MIT]
