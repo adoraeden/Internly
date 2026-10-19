@@ -1,0 +1,6 @@
+{
+  "name": "Internly — Make your next move.",
+  "description": "Internly is an editorial internship and career management platform for college students. Track applications, evaluate resume alignment, and prepare for interviews.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

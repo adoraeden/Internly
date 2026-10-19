@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+@layer base {
+  :root {
+    --deep-teal: #087E83;
+    --dark-teal: #155456;
+    --snow-white: #FFFFFF;
+    --cool-off-white: #F5F8F8;
+    --pale-teal: #E1F0EF;
+    --dark-charcoal: #202729;
+    --muted-slate: #687879;
+    --soft-border: #DCE6E6;
+    --success-green: #278567;
+    --success-bg: #E7F3EF;
+    --warning-amber: #C28A35;
+    --warning-bg: #FDF5E8;
+    --error-red: #C64D4D;
+    --error-bg: #FBECEC;
+  }
+
+  body {
+    background-color: var(--cool-off-white);
+    color: var(--dark-charcoal);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Editorial Serif Utility (headings) */
+.font-serif-display {
+  font-family: 'DM Serif Display', Georgia, serif;
+}
+
+.font-sans-ui {
+  font-family: var(--font-sans);
+}
+
+.font-mono-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #DCE6E6;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #BCCFCF;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
