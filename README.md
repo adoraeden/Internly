@@ -35,16 +35,15 @@ Applying for internships means juggling dozens of deadlines, resume versions and
 
 | Applications | Kanban |
 | --- | --- |
-| ![Applications](docs/screenshots/applications-table.png) | ![Kanban](docs/screenshots/applications-kanban.png) |
+| ![Applications](./docs/screenshots/applications-table.png) | ![Kanban](./docs/screenshots/applications-kanban.png) |
 
-| Interview prep | Resume checker |
+| Interview Prep | Resume Checker |
 | --- | --- |
-| ![Interview prep](docs/screenshots/interview-prep.png) | ![Resume checker](docs/screenshots/resume-checker.png) |
+| ![Interview Prep](./docs/screenshots/interview-prep.png) | ![Resume Checker](./docs/screenshots/resume-checker.png) |
 
 | Analytics | Profile |
 | --- | --- |
-| ![Analytics](docs/screenshots/analytics.png) | ![Profile](docs/screenshots/profile.png) |
-
+| ![Analytics](./docs/screenshots/analytics.png) | ![Profile](./docs/screenshots/profile.png) |
 ## Architecture
 
 ```mermaid
