@@ -27,14 +27,7 @@ export interface CreateAccountData {
   termsAccepted: boolean;
 }
 
-// Still used by the "Instant demo" button's labels. It needs a real demo
-// account in the database to work, which we'll handle in a later step.
-export const DEMO_DEFAULT_USER: AuthUser = {
-  id: 'usr-alex-johnson-2027',
-  name: 'Alex Johnson',
-  email: 'alex.johnson@demo.college.edu',
-  createdAt: '2026-09-01T00:00:00.000Z',
-};
+
 
 // Keys the old fake login used. We delete them so they don't sit in the browser.
 const LEGACY_SESSION_KEY = 'internly_auth_session_demo';

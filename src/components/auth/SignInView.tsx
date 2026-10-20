@@ -1,31 +1,15 @@
 import React, { useState } from 'react';
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  ArrowRight,
-  AlertCircle,
-  Sparkles,
-  ShieldCheck,
-  CheckCircle2,
-  LogIn,
-} from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, ShieldCheck } from 'lucide-react';
 import { Logo } from '../common/Logo';
-import { authService, DEMO_DEFAULT_USER } from '../../services/authService';
+import { authService } from '../../services/authService';
 import { AuthUser } from '../../types';
 
 interface SignInViewProps {
   onSuccess: (user: AuthUser) => void;
   onNavigateToSignUp: () => void;
-  onOpenForgotPassword: () => void;
 }
 
-export const SignInView: React.FC<SignInViewProps> = ({
-  onSuccess,
-  onNavigateToSignUp,
-  onOpenForgotPassword,
-}) => {
+export const SignInView: React.FC<SignInViewProps> = ({ onSuccess, onNavigateToSignUp }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -54,27 +38,12 @@ export const SignInView: React.FC<SignInViewProps> = ({
         rememberMe,
       });
       onSuccess(user);
-    } catch (err: any) {
-      setErrorMessage(err.message || 'Unable to sign in. Please verify your credentials.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleDemoSignIn = async () => {
-    setEmail(DEMO_DEFAULT_USER.email);
-    setPassword('DemoIntern2027!');
-    setErrorMessage(null);
-    try {
-      setIsSubmitting(true);
-      const { user } = await authService.signIn({
-        email: DEMO_DEFAULT_USER.email,
-        password: 'DemoIntern2027!',
-        rememberMe: true,
-      });
-      onSuccess(user);
-    } catch (err: any) {
-      setErrorMessage(err.message || 'Demo sign-in failed.');
+    } catch (err) {
+      setErrorMessage(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Unable to sign in. Please verify your credentials.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -97,41 +66,11 @@ export const SignInView: React.FC<SignInViewProps> = ({
           <h1 className="text-3xl font-serif-display text-[#155456] tracking-tight">
             Welcome back.
           </h1>
-          <p className="mt-2 text-sm text-[#687879]">
-            Your next opportunity starts here.
-          </p>
-        </div>
-
-        {/* Demo Fast Track Pill */}
-        <div className="mt-6 bg-[#E1F0EF] border border-[#087E83]/20 rounded-2xl p-4 shadow-xs">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-[#087E83] text-white flex items-center justify-center shrink-0 shadow-xs">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-bold text-[#155456] truncate">
-                  Explore with Demo Candidate
-                </p>
-                <p className="text-[11px] text-[#687879] truncate">
-                  Pre-populated with 12 applications & prep data
-                </p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={handleDemoSignIn}
-              disabled={isSubmitting}
-              className="px-3.5 py-1.5 bg-[#087E83] hover:bg-[#155456] text-white text-xs font-bold rounded-xl transition-colors shrink-0 shadow-xs flex items-center gap-1.5"
-            >
-              <LogIn className="w-3.5 h-3.5" />
-              <span>Instant demo</span>
-            </button>
-          </div>
+          <p className="mt-2 text-sm text-[#687879]">Your next opportunity starts here.</p>
         </div>
 
         {/* Main Card */}
-        <div className="mt-5 bg-white py-8 px-6 sm:px-10 border border-[#DCE6E6] rounded-2xl shadow-sm">
+        <div className="mt-8 bg-white py-8 px-6 sm:px-10 border border-[#DCE6E6] rounded-2xl shadow-sm">
           {errorMessage && (
             <div className="mb-5 flex items-start gap-2.5 p-3.5 bg-[#FBECEC] text-[#C64D4D] text-xs font-medium rounded-xl border border-[#C64D4D]/20 animate-in fade-in">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -168,21 +107,12 @@ export const SignInView: React.FC<SignInViewProps> = ({
 
             {/* Password Field */}
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label
-                  htmlFor="password"
-                  className="block text-xs font-bold text-[#155456] uppercase tracking-wider"
-                >
-                  Password
-                </label>
-                <button
-                  type="button"
-                  onClick={onOpenForgotPassword}
-                  className="text-xs font-semibold text-[#087E83] hover:text-[#155456] transition-colors"
-                >
-                  Forgot password?
-                </button>
-              </div>
+              <label
+                htmlFor="password"
+                className="block text-xs font-bold text-[#155456] uppercase tracking-wider mb-1.5"
+              >
+                Password
+              </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#687879]">
                   <Lock className="w-4 h-4" />
@@ -193,6 +123,7 @@ export const SignInView: React.FC<SignInViewProps> = ({
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   required
+                  maxLength={72}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••••••"
@@ -223,7 +154,7 @@ export const SignInView: React.FC<SignInViewProps> = ({
                 htmlFor="remember-me"
                 className="ml-2.5 block text-xs font-medium text-[#202729] cursor-pointer select-none"
               >
-                Remember this session on this browser
+                Keep me signed in for 30 days
               </label>
             </div>
 
@@ -253,11 +184,11 @@ export const SignInView: React.FC<SignInViewProps> = ({
           </div>
         </div>
 
-        {/* Security & Architecture Disclosures */}
+        {/* Security note */}
         <div className="mt-6 text-center">
           <p className="text-[11px] text-[#687879] flex items-center justify-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-[#278567]" />
-            <span>Internly Frontend Prototype · Modular MERN-ready Service Layer</span>
+            <span>Your password is stored as a one-way hash and never in plain text.</span>
           </p>
         </div>
       </div>

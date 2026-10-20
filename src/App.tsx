@@ -20,7 +20,7 @@ import { DeleteConfirmModal } from './components/modals/DeleteConfirmModal';
 import { LogoutModal } from './components/modals/LogoutModal';
 import { SignInView } from './components/auth/SignInView';
 import { CreateAccountView } from './components/auth/CreateAccountView';
-import { ForgotPasswordModal } from './components/modals/ForgotPasswordModal';
+
 import { ProfilePhotoModal } from './components/modals/ProfilePhotoModal';
 import { Logo } from './components/common/Logo';
 import { authService } from './services/authService';
@@ -114,7 +114,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [authView, setAuthView] = useState<'signin' | 'signup'>('signin');
-  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+  
 
   // This user's interview-prep data (loads after login, clears on logout)
   const interview = useInterviewData(currentUser?.id);
@@ -368,26 +368,18 @@ export default function App() {
   }
 
   // Signed-out Authentication Gateway
+    // Signed-out Authentication Gateway
   if (!currentUser) {
-    return (
-      <>
-        {authView === 'signin' ? (
-          <SignInView
-            onSuccess={handleAuthSuccess}
-            onNavigateToSignUp={() => setAuthView('signup')}
-            onOpenForgotPassword={() => setIsForgotPasswordOpen(true)}
-          />
-        ) : (
-          <CreateAccountView
-            onSuccess={handleAuthSuccess}
-            onNavigateToSignIn={() => setAuthView('signin')}
-          />
-        )}
-        <ForgotPasswordModal
-          isOpen={isForgotPasswordOpen}
-          onClose={() => setIsForgotPasswordOpen(false)}
-        />
-      </>
+    return authView === 'signin' ? (
+      <SignInView
+        onSuccess={handleAuthSuccess}
+        onNavigateToSignUp={() => setAuthView('signup')}
+      />
+    ) : (
+      <CreateAccountView
+        onSuccess={handleAuthSuccess}
+        onNavigateToSignIn={() => setAuthView('signin')}
+      />
     );
   }
 

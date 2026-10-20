@@ -7,7 +7,6 @@ import {
   EyeOff,
   ArrowRight,
   AlertCircle,
-  CheckCircle2,
   ShieldCheck,
   Check,
   X,
@@ -35,22 +34,21 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Real-time password criteria
+  // Live password feedback
   const hasMinLength = password.length >= 8;
   const hasNumberOrSymbol = /[\d!@#$%^&*()_+={}[\]:;"'<>,.?/\\-]/.test(password);
-  const hasUppercaseOrLowercase = /[a-zA-Z]/.test(password);
   const passwordsMatch = password.length > 0 && password === confirmPassword;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!fullName.trim()) {
+    if (fullName.trim().length < 2) {
       setErrorMessage('Please enter your full name.');
       return;
     }
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setErrorMessage('Please enter a valid academic or professional email address.');
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
     if (!hasMinLength) {
@@ -62,7 +60,7 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
       return;
     }
     if (!termsAccepted) {
-      setErrorMessage('Please acknowledge the terms of use to create your demo profile.');
+      setErrorMessage('Please accept the terms to create your account.');
       return;
     }
 
@@ -75,8 +73,12 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
         termsAccepted,
       });
       onSuccess(user);
-    } catch (err: any) {
-      setErrorMessage(err.message || 'Account registration could not be completed.');
+    } catch (err) {
+      setErrorMessage(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Account registration could not be completed.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -132,9 +134,10 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
                   type="text"
                   autoComplete="name"
                   required
+                  maxLength={60}
                   value={fullName}
                   onChange={e => setFullName(e.target.value)}
-                  placeholder="Alex Johnson"
+                  placeholder="Your full name"
                   className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-[#DCE6E6] rounded-xl text-sm text-[#202729] placeholder-[#687879]/50 focus:outline-none focus:ring-2 focus:ring-[#087E83] focus:border-transparent transition-all"
                 />
               </div>
@@ -160,7 +163,7 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="alex.johnson@berkeley.edu"
+                  placeholder="student@college.edu"
                   className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-[#DCE6E6] rounded-xl text-sm text-[#202729] placeholder-[#687879]/50 focus:outline-none focus:ring-2 focus:ring-[#087E83] focus:border-transparent transition-all"
                 />
               </div>
@@ -184,6 +187,7 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   required
+                  maxLength={72}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="At least 8 characters"
@@ -218,6 +222,7 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
                   type={showConfirmPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   required
+                  maxLength={72}
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
                   placeholder="Repeat your password"
@@ -234,10 +239,10 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
               </div>
             </div>
 
-            {/* Clear Password Requirements Hint */}
+            {/* Password tips */}
             <div className="bg-[#F5F8F8] border border-[#DCE6E6] rounded-xl p-3 space-y-1.5 text-xs text-[#687879]">
               <span className="font-bold text-[#155456] block text-[11px] uppercase tracking-wider">
-                Password requirements:
+                Password tips:
               </span>
               <div className="grid grid-cols-1 gap-1 text-[11px]">
                 <div className="flex items-center gap-1.5">
@@ -247,7 +252,7 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
                     <X className="w-3.5 h-3.5 text-[#687879] shrink-0" />
                   )}
                   <span className={hasMinLength ? 'text-[#278567] font-semibold' : ''}>
-                    At least 8 characters
+                    At least 8 characters (required)
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -257,7 +262,7 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
                     <X className="w-3.5 h-3.5 text-[#687879] shrink-0" />
                   )}
                   <span className={hasNumberOrSymbol ? 'text-[#278567] font-semibold' : ''}>
-                    Includes a number or special symbol
+                    Include a number or symbol (recommended)
                   </span>
                 </div>
                 {confirmPassword && (
@@ -296,7 +301,8 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
                 htmlFor="terms"
                 className="ml-2.5 block text-xs text-[#202729] leading-snug cursor-pointer select-none"
               >
-                I agree to Internly's Candidate Terms and acknowledge that this prototype stores demo records locally in my browser session.
+                I agree to Internly's terms of use and understand that my applications, profile and
+                interview notes are stored securely in my account.
               </label>
             </div>
 
@@ -326,11 +332,11 @@ export const CreateAccountView: React.FC<CreateAccountViewProps> = ({
           </div>
         </div>
 
-        {/* Security & Architecture Disclosures */}
+        {/* Security note */}
         <div className="mt-6 text-center">
           <p className="text-[11px] text-[#687879] flex items-center justify-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-[#278567]" />
-            <span>Frontend demo validation · Passwords will be securely hashed with bcrypt on Express backend</span>
+            <span>Your password is stored as a one-way hash and never in plain text.</span>
           </p>
         </div>
       </div>
