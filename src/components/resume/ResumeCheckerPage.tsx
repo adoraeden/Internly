@@ -19,6 +19,7 @@ import {
   ResumeAnalysisResult,
   Application,
   ImprovementChecklistItem,
+  UserProfile,
 } from '../../types';
 import { SAMPLE_JOB_DESCRIPTION, SAMPLE_RESUME_TEXT } from '../../data/seedData';
 import { ResumeService, SavedAnalysisSummary } from '../../services/resumeService';
@@ -27,6 +28,18 @@ import { todayLocalISO } from '../../utils/dates';
 interface ResumeCheckerPageProps {
   applications?: Application[];
   userId?: string;
+  profile?: UserProfile;
+}
+
+// Builds a Skills section from the profile (empty string if there are no skills)
+function skillsFromProfile(profile?: UserProfile): string {
+  const languages = profile?.technicalSkills ?? [];
+  const tools = profile?.toolsAndTechnologies ?? [];
+  if (languages.length === 0 && tools.length === 0) return '';
+  const lines = ['SKILLS'];
+  if (languages.length > 0) lines.push(`Languages & Core: ${languages.join(', ')}`);
+  if (tools.length > 0) lines.push(`Frameworks & Tools: ${tools.join(', ')}`);
+  return lines.join('\n');
 }
 
 const errorText = (err: unknown, fallback: string) =>
@@ -35,10 +48,13 @@ const errorText = (err: unknown, fallback: string) =>
 export const ResumeCheckerPage: React.FC<ResumeCheckerPageProps> = ({
   applications = [],
   userId,
+  profile,
 }) => {
   // Boxes start empty. Use the "Sample" buttons to try the tool.
   const [jobDescription, setJobDescription] = useState<string>('');
-  const [resumeText, setResumeText] = useState<string>('');
+    const [resumeText, setResumeText] = useState<string>(() => skillsFromProfile(profile));
+  // Once you edit or clear the box yourself, we stop auto-filling it
+  const [resumeTouched, setResumeTouched] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<ResumeAnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [copiedSuggestions, setCopiedSuggestions] = useState(false);
@@ -77,6 +93,21 @@ export const ResumeCheckerPage: React.FC<ResumeCheckerPageProps> = ({
       .finally(() => setHistoryLoading(false));
   };
 
+    // The profile loads a moment after the page opens, so fill the box once it arrives
+  useEffect(() => {
+    if (resumeTouched || resumeText.trim() !== '') return;
+    const fromProfile = skillsFromProfile(profile);
+    if (fromProfile) setResumeText(fromProfile);
+  }, [profile]);
+
+  const handleUseProfileSkills = () => {
+    const fromProfile = skillsFromProfile(profile);
+    if (!fromProfile) return;
+    setResumeTouched(true);
+    setResumeText(prev => (prev.trim() ? `${fromProfile}\n\n${prev}` : fromProfile));
+  };
+
+
   useEffect(() => {
     loadHistory();
   }, [userId]);
@@ -103,7 +134,7 @@ export const ResumeCheckerPage: React.FC<ResumeCheckerPageProps> = ({
     setResumeText('');
     setAnalysisResult(null);
     setChecklistState([]);
-    setJobSource(null);
+    setResumeTouched(true);
   };
 
   const loadSampleJob = () => {
@@ -113,6 +144,7 @@ export const ResumeCheckerPage: React.FC<ResumeCheckerPageProps> = ({
 
   const loadSampleResume = () => {
     setResumeText(SAMPLE_RESUME_TEXT);
+    setResumeTouched(true);
   };
 
   const handleImportFromApplication = (appId: string) => {
@@ -434,6 +466,15 @@ export const ResumeCheckerPage: React.FC<ResumeCheckerPageProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2">
+                                    {skillsFromProfile(profile) && (
+                    <button
+                      type="button"
+                      onClick={handleUseProfileSkills}
+                      className="text-xs font-semibold text-[#087E83] hover:underline"
+                    >
+                      Use profile skills
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={loadSampleResume}
@@ -444,7 +485,10 @@ export const ResumeCheckerPage: React.FC<ResumeCheckerPageProps> = ({
                   {resumeText && (
                     <button
                       type="button"
-                      onClick={() => setResumeText('')}
+                                            onClick={() => {
+                        setResumeTouched(true);
+                        setResumeText('');
+                      }}
                       className="text-xs text-[#687879] hover:text-[#C64D4D]"
                     >
                       Clear
@@ -455,7 +499,10 @@ export const ResumeCheckerPage: React.FC<ResumeCheckerPageProps> = ({
 
               <textarea
                 value={resumeText}
-                onChange={e => setResumeText(e.target.value)}
+                                onChange={e => {
+                  setResumeTouched(true);
+                  setResumeText(e.target.value);
+                }}
                 placeholder="Paste your resume sections (Skills, Projects, Education, Work Experience) here. Your resume text stays in your browser."
                 className="w-full flex-1 p-4 text-sm text-[#202729] bg-[#F5F8F8] border border-transparent rounded-xl focus:bg-white focus:outline-none focus:border-[#087E83] focus:ring-2 focus:ring-[#087E83]/20 resize-none font-mono leading-relaxed transition-colors"
               />

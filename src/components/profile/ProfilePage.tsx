@@ -213,7 +213,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         </div>
       </div>
 
-      {/* Identity Banner */}
+            {/* Identity Banner */}
       <div className="bg-white border border-[#DCE6E6] rounded-2xl shadow-xs overflow-hidden">
         <div className="h-28 bg-gradient-to-r from-[#155456] via-[#087E83] to-[#155456] relative">
           <div className="absolute right-6 top-4 text-xs font-semibold text-white/80 flex items-center gap-2 bg-black/20 backdrop-blur-xs px-3 py-1.5 rounded-full">
@@ -222,63 +222,38 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
         </div>
 
-        <div className="px-6 pb-6 pt-0 relative">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 -mt-12 mb-6">
-            <div className="flex items-end gap-4">
-              <div className="relative group shrink-0">
-                <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-[#087E83] border-4 border-white shadow-md flex items-center justify-center">
-                  {profile.avatarUrl ? (
-                    <img
-                      src={profile.avatarUrl}
-                      alt={profile.name}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="font-bold text-2xl text-white tracking-tight uppercase">
-                      {initials}
-                    </span>
-                  )}
-                </div>
-                {onOpenPhotoModal && (
-                  <button
-                    type="button"
-                    onClick={onOpenPhotoModal}
-                    className="absolute -bottom-1 -right-1 p-2 rounded-xl bg-[#087E83] hover:bg-[#155456] text-white shadow-md border-2 border-white transition-all flex items-center justify-center cursor-pointer"
-                    title="Change profile photo"
-                  >
-                    <Camera className="w-3.5 h-3.5" />
-                  </button>
+        <div className="px-6 pb-6">
+          {/* Avatar overlaps the banner; the text below never does */}
+          <div className="flex items-end justify-between gap-4">
+            <div className="relative shrink-0 -mt-12">
+              <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-[#087E83] border-4 border-white shadow-md flex items-center justify-center">
+                {profile.avatarUrl ? (
+                  <img
+                    src={profile.avatarUrl}
+                    alt={profile.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="font-bold text-2xl text-white tracking-tight uppercase">
+                    {initials}
+                  </span>
                 )}
               </div>
-
-              <div className="min-w-0 pb-1">
-                <div className="flex items-center gap-3">
-                  <h3 className="text-2xl font-bold text-[#155456] tracking-tight truncate">
-                    {profile.name}
-                  </h3>
-                  {onOpenPhotoModal && (
-                    <button
-                      type="button"
-                      onClick={onOpenPhotoModal}
-                      className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-[#DCE6E6] bg-white text-xs font-semibold text-[#155456] hover:bg-[#F5F8F8] hover:text-[#087E83] transition-colors cursor-pointer"
-                    >
-                      <Camera className="w-3 h-3 text-[#087E83]" />
-                      <span>Edit photo</span>
-                    </button>
-                  )}
-                </div>
-                <p className="text-sm font-medium text-[#087E83] mt-0.5">
-                  {profile.targetRole || 'Add your target role'}
-                </p>
-                {profile.headline && (
-                  <p className="text-sm text-[#687879] mt-1 max-w-xl">{profile.headline}</p>
-                )}
-              </div>
+              {onOpenPhotoModal && (
+                <button
+                  type="button"
+                  onClick={onOpenPhotoModal}
+                  className="absolute -bottom-1 -right-1 p-2 rounded-xl bg-[#087E83] hover:bg-[#155456] text-white shadow-md border-2 border-white transition-all flex items-center justify-center cursor-pointer"
+                  title="Change profile photo"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
 
             {/* Quick Links */}
-            <div className="flex items-center gap-2 pb-1">
+            <div className="flex items-center gap-2 pt-3">
               {profile.githubUrl && (
                 <a
                   href={profile.githubUrl}
@@ -315,8 +290,35 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
           </div>
 
+          {/* Name, role and headline sit fully on the white area */}
+          <div className="mt-4 min-w-0">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h3 className="text-2xl font-bold text-[#155456] tracking-tight">
+                {profile.name}
+              </h3>
+              {onOpenPhotoModal && (
+                <button
+                  type="button"
+                  onClick={onOpenPhotoModal}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-[#DCE6E6] bg-white text-xs font-semibold text-[#155456] hover:bg-[#F5F8F8] hover:text-[#087E83] transition-colors cursor-pointer"
+                >
+                  <Camera className="w-3 h-3 text-[#087E83]" />
+                  <span>Edit photo</span>
+                </button>
+              )}
+            </div>
+            <p className="text-sm font-medium text-[#087E83] mt-0.5">
+              {profile.targetRole || 'Add your target role'}
+            </p>
+            {profile.headline && (
+              <p className="text-sm text-[#687879] mt-2 max-w-3xl leading-relaxed">
+                {profile.headline}
+              </p>
+            )}
+          </div>
+
           {/* Quick Meta Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-[#DCE6E6] text-sm text-[#687879]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5 pt-4 border-t border-[#DCE6E6] text-sm text-[#687879]">
             <div className="flex items-center gap-2.5">
               <GraduationCap className="w-4 h-4 text-[#087E83] shrink-0" />
               <span className="truncate">{profile.degree || 'Add your degree'}</span>

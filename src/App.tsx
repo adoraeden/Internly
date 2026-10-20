@@ -482,7 +482,11 @@ export default function App() {
               )}
 
               {currentTab === 'resume-checker' && (
-                                <ResumeCheckerPage applications={applications} userId={currentUser.id} />
+                                                <ResumeCheckerPage
+                  applications={applications}
+                  userId={currentUser.id}
+                  profile={profile}
+                />
               )}
 
               {currentTab === 'analytics' && <AnalyticsPage applications={applications} />}
