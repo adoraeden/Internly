@@ -11,7 +11,8 @@
 ![Node.js](https://img.shields.io/badge/Node.js-Express_5-339933?logo=nodedotjs&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)
 
-![Dashboard](docs/screenshots/dashboard.png)
+![Dashboard](./docs/screenshots/dashboard.png)
+
 
 </div>
 
