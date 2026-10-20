@@ -354,6 +354,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <input
                   type="text"
                   value={name}
+                  maxLength={60}
                   onChange={e => setName(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83] focus:ring-2 focus:ring-[#087E83]/20"
                 />
@@ -380,6 +381,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <input
                   type="text"
                   value={degree}
+                  maxLength={150}
                   onChange={e => setDegree(e.target.value)}
                   placeholder="e.g. BCA (Class of 2027)"
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83] focus:ring-2 focus:ring-[#087E83]/20"
@@ -393,6 +395,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <input
                   type="text"
                   value={location}
+                  maxLength={120}
                   onChange={e => setLocation(e.target.value)}
                   placeholder="e.g. Nashik, Maharashtra"
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83] focus:ring-2 focus:ring-[#087E83]/20"
@@ -406,6 +409,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <textarea
                   rows={2}
                   value={headline}
+                  maxLength={500}
                   onChange={e => setHeadline(e.target.value)}
                   placeholder="A one-line summary of who you are and what you're aiming for"
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83] focus:ring-2 focus:ring-[#087E83]/20"
@@ -428,6 +432,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <input
                   type="text"
                   value={targetRole}
+                  maxLength={120}
                   onChange={e => setTargetRole(e.target.value)}
                   placeholder="e.g. Backend Developer Intern"
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83]"
@@ -457,6 +462,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <input
                   type="text"
                   value={preferredDuration}
+                  maxLength={100}
                   onChange={e => setPreferredDuration(e.target.value)}
                   placeholder="e.g. 3-month summer term"
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83]"
@@ -491,6 +497,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   type="text"
                   placeholder="Add role title (e.g. Full-Stack Intern)..."
                   value={newRoleInput}
+                  maxLength={80}
                   onChange={e => setNewRoleInput(e.target.value)}
                   onKeyDown={e => {
                     if (e.key === 'Enter') {
@@ -537,6 +544,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   type="text"
                   placeholder="Add target city (e.g. Pune)..."
                   value={newLocationInput}
+                  maxLength={80}
                   onChange={e => setNewLocationInput(e.target.value)}
                   onKeyDown={e => {
                     if (e.key === 'Enter') {
@@ -591,6 +599,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   type="text"
                   placeholder="Add language or core skill (e.g. JavaScript)..."
                   value={newSkillInput}
+                  maxLength={60}
                   onChange={e => setNewSkillInput(e.target.value)}
                   onKeyDown={e => {
                     if (e.key === 'Enter') {
@@ -636,6 +645,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   type="text"
                   placeholder="Add framework or tool (e.g. React, MongoDB)..."
                   value={newToolInput}
+                  maxLength={60}
                   onChange={e => setNewToolInput(e.target.value)}
                   onKeyDown={e => {
                     if (e.key === 'Enter') {
@@ -670,6 +680,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <input
                   type="text"
                   value={githubUrl}
+                  maxLength={500}
                   onChange={e => setGithubUrl(e.target.value)}
                   placeholder="https://github.com/..."
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83]"
@@ -683,6 +694,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <input
                   type="text"
                   value={linkedinUrl}
+                  maxLength={500}
                   onChange={e => setLinkedinUrl(e.target.value)}
                   placeholder="https://linkedin.com/in/..."
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83]"
@@ -696,6 +708,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <input
                   type="text"
                   value={portfolioUrl}
+                  maxLength={500}
                   onChange={e => setPortfolioUrl(e.target.value)}
                   placeholder="https://..."
                   className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#DCE6E6] rounded-xl text-[#202729] focus:outline-none focus:border-[#087E83]"

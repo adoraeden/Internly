@@ -2,40 +2,43 @@ import { z } from 'zod';
 import { parseBody } from '../utils/validate.js';
 
 // ---------- Validation rules ----------
-const text = max => z.string().trim().max(max, 'This is too long.');
+// Messages name the field and the limit, so you know what to shorten
+const text = (max, label) =>
+  z.string().trim().max(max, `${label} must be ${max} characters or fewer.`);
 
-const url = z
-  .string()
-  .trim()
-  .max(300, 'Link is too long.')
-  .refine(v => v === '' || /^https?:\/\//i.test(v), 'Must start with http:// or https://');
-
-const list = (maxItems, maxLength) =>
+const url = (label) =>
   z
-    .array(z.string().trim().min(1).max(maxLength, 'An item is too long.'))
-    .max(maxItems, `Please keep this list to ${maxItems} items or fewer.`);
+    .string()
+    .trim()
+    .max(500, `${label} must be 500 characters or fewer.`)
+    .refine(v => v === '' || /^https?:\/\//i.test(v), `${label} must start with http:// or https://`);
+
+const list = (label, maxItems, maxLength) =>
+  z
+    .array(z.string().trim().min(1).max(maxLength, `Each ${label} item must be ${maxLength} characters or fewer.`))
+    .max(maxItems, `Please keep ${label} to ${maxItems} items or fewer.`);
 
 // .partial() means every field is optional, so the pages can save just what changed.
 // Fields not listed here (email, avatarUrl, passwordHash...) are ignored.
 const profileSchema = z
   .object({
-    name: z.string().trim().min(2, 'Please enter your full name.').max(60, 'Name is too long.'),
-    degree: text(100),
-    headline: text(150),
-    targetRole: text(100),
-    location: text(100),
-    portfolioUrl: url,
-    linkedinUrl: url,
-    githubUrl: url,
-    preferredRoles: list(20, 60),
-    preferredIndustries: list(20, 60),
-    preferredLocations: list(20, 60),
+    name: z.string().trim().min(2, 'Please enter your full name.').max(60, 'Name must be 60 characters or fewer.'),
+    degree: text(150, 'Degree'),
+    headline: text(500, 'Headline'),
+    targetRole: text(120, 'Target role'),
+    location: text(120, 'Location'),
+    portfolioUrl: url('Portfolio link'),
+    linkedinUrl: url('LinkedIn link'),
+    githubUrl: url('GitHub link'),
+    preferredRoles: list('target roles', 20, 80),
+    preferredIndustries: list('industries', 20, 80),
+    preferredLocations: list('cities', 20, 80),
     preferredWorkMode: z.enum(['Remote', 'Hybrid', 'On-site', 'Any']),
     employmentType: z.enum(['Internship', 'Co-op', 'New Grad', '']),
-    preferredDuration: text(60),
-    technicalSkills: list(50, 40),
-    toolsAndTechnologies: list(50, 40),
-    areasToLearn: list(50, 40),
+    preferredDuration: text(100, 'Term / duration'),
+    technicalSkills: list('skills', 60, 60),
+    toolsAndTechnologies: list('tools', 60, 60),
+    areasToLearn: list('growth areas', 50, 60),
     defaultApplicationView: z.enum(['table', 'kanban']),
     defaultSortBy: z.enum(['newest', 'oldest', 'deadline', 'company', 'role', 'priority']),
     followUpReminderDays: z.number().int().min(0).max(60),
